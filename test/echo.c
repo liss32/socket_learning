@@ -6,6 +6,7 @@ int main(int argc,char* argv[]){
 	if(argc!=3)
 		printf("input right host and port");
 	if((fd=open_clientfd(argv[1],argv[2]))>0)
-		printf("%d",fd);
-		return 0;
+	
+	while(1){
+		fget
 }

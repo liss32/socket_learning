@@ -1,22 +1,27 @@
-#ifndef _OENLISTEN_
+#ifndef _OPENLISTEN_
 #define _OPENLISTEN_
+#include"../src/error.h"
 #include<sys/socket.h>
 #include<sys/types.h>
 #include<netdb.h>
 #include<string.h>
 #include<stdlib.h>
 #include<stdio.h>
+#include<errno.h>
 #define LISTENQ 5
 int open_listenfd(char* port){
 	
 	struct addrinfo hints,*listp,*p;
 	int listenfd,optval=1;
-	
+memset(&hints,0,sizeof(struct addrinfo));	
 	hints.ai_socktype=SOCK_STREAM;
 	hints.ai_flags=AI_ADDRCONFIG;
 	hints.ai_flags=AI_PASSIVE;
-	if((getaddrinfo(NULL,port,&hints,&listp))!=0){
-		printf("error getaddrinfo");
+hints.ai_family=AF_INET;
+//hints.ai_flags=AI_NUMERICSERV;
+	int code;
+	if((code=getaddrinfo(NULL,port,&hints,&listp))!=0){
+		GAI_error(code,"error getaddrinfo");
 		exit(0);
 	}
 	for(p=listp;p;p=p->ai_next){
